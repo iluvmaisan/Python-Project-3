@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,115 +10,615 @@
 
   <style>
     :root {
-      --brand-primary: #ffc107;
-      --brand-dark: #121212;
-      --brand-light: #ffffff;
+      --brand-primary: #00f5ff;
+      --brand-secondary: #ff8dfb;
+      --brand-accent: #ffe45e;
+      --bg-main: #020617;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(148, 163, 184, 0.4);
+      --text-main: #e5e7eb;
+      --muted: #9ca3af;
+      --shadow-soft: 0 24px 80px rgba(15, 23, 42, 0.85);
+      --radius-lg: 24px;
+      --transition-soft: 220ms cubic-bezier(.22,.61,.36,1);
     }
-    * { font-family: "Poppins", sans-serif; }
+
+    * {
+      font-family: "Poppins", sans-serif;
+      box-sizing: border-box;
+    }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #f8f9fa, #e9ecef, #f1f3f5);
-      background-size: 300% 300%;
-      animation: bgShift 18s ease-in-out infinite;
-    }
-    @keyframes bgShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    header {
-      background: linear-gradient(90deg, #000000, #343a40);
-      color: var(--brand-light);
-      padding: 1.8rem 2rem;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 0% 0%, #0f172a, #020617 45%, #000000 100%);
+      color: var(--text-main);
+      overflow: hidden;
+      position: relative;
     }
 
-    .card {
-      border: none;
-      border-radius: 15px;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      background-color: #fff;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+    /* ==== Futuristic animated background orbs ==== */
+    .orb {
+      position: fixed;
+      border-radius: 999px;
+      filter: blur(40px);
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
     }
 
-    .mono { font-family: "Poppins", monospace; font-weight: 500; }
+    .orb--cyan {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(34,211,238,0.85), transparent 60%);
+      top: -60px;
+      left: -40px;
+      animation: floatCyan 16s ease-in-out infinite alternate;
+    }
 
+    .orb--purple {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(236,72,153,0.9), transparent 65%);
+      bottom: -120px;
+      right: -80px;
+      animation: floatPurple 18s ease-in-out infinite alternate;
+    }
+
+    .orb--amber {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(250,204,21,0.9), transparent 70%);
+      top: 40%;
+      left: 55%;
+      transform: translate(-50%, -50%);
+      opacity: 0.5;
+      animation: pulseAmber 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatCyan {
+      0% { transform: translate3d(0,0,0); }
+      100% { transform: translate3d(40px,80px,0); }
+    }
+
+    @keyframes floatPurple {
+      0% { transform: translate3d(0,0,0); }
+      100% { transform: translate3d(-60px,-40px,0); }
+    }
+
+    @keyframes pulseAmber {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.45; }
+      100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+    }
+
+    /* ==== Main wrapper ==== */
+    .ip-shell {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      max-width: 1040px;
+      padding: 24px;
+    }
+
+    .ip-panel {
+      position: relative;
+      border-radius: 32px;
+      padding: 28px 28px 26px;
+      background:
+        linear-gradient(135deg, rgba(15,23,42,0.8), rgba(15,23,42,0.4))
+        border-box;
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      backdrop-filter: blur(26px);
+    }
+
+    .ip-panel::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: conic-gradient(
+        from 140deg,
+        rgba(56,189,248,0.18),
+        rgba(251,113,133,0.16),
+        rgba(251,191,36,0.12),
+        rgba(56,189,248,0.18)
+      );
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude;
+      padding: 1px;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    /* ==== Header / Hero ==== */
+    .ip-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .ip-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .ip-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 30% 20%, #fef3c7, #0ea5e9 45%, #4f46e5 90%);
+      box-shadow: 0 0 40px rgba(56,189,248,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #0f172a;
+    }
+
+    .ip-title h1 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin: 0;
+      color: #f9fafb;
+    }
+
+    .ip-header p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .ip-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.22), rgba(15,23,42,0.6));
+      color: #e5e7eb;
+      backdrop-filter: blur(18px);
+    }
+
+    .theme-toggle-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      padding: 7px 14px;
+      background: radial-gradient(circle at 0 0, rgba(16,185,129,0.3), rgba(15,23,42,0.9));
+      color: #e5e7eb;
+      font-size: 0.78rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-soft), transform var(--transition-soft), box-shadow var(--transition-soft);
+      box-shadow: 0 10px 30px rgba(15,23,42,0.7);
+    }
+
+    .theme-toggle-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(15,23,42,0.9);
+      background: radial-gradient(circle at 0 0, rgba(45,212,191,0.5), rgba(15,23,42,0.9));
+    }
+
+    /* ==== Grid content ==== */
+    .ip-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .ip-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      body {
+        align-items: stretch;
+        padding: 12px;
+      }
+      .ip-panel {
+        padding: 20px 18px 20px;
+        border-radius: 24px;
+      }
+    }
+
+    /* ==== Glass cards & 3D hover ==== */
+    .glass-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      background: linear-gradient(135deg,
+        rgba(15,23,42,0.9),
+        rgba(15,23,42,0.6)
+      );
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 16px 40px rgba(15,23,42,0.9);
+      overflow: hidden;
+      transition: transform var(--transition-soft), box-shadow var(--transition-soft), border-color var(--transition-soft), background var(--transition-soft);
+    }
+
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0,
+        rgba(59,130,246,0.35),
+        transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition-soft);
+      pointer-events: none;
+    }
+
+    .glass-card.tilt-card:hover {
+      transform: translateY(-6px) rotate3d(1, -1.4, 0, 10deg) scale(1.01);
+      box-shadow: 0 26px 80px rgba(15,23,42,0.95);
+      border-color: rgba(56,189,248,0.7);
+      background: linear-gradient(135deg,
+        rgba(15,23,42,0.98),
+        rgba(15,23,42,0.7)
+      );
+    }
+
+    .glass-card.tilt-card:hover::before {
+      opacity: 1;
+    }
+
+    .card-label {
+      font-size: 0.79rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .ip-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .ip-value {
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      background: linear-gradient(120deg, #e5e7eb, #a5f3fc, #f9a8d4);
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 18px rgba(125,211,252,0.5);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      color: var(--muted);
+    }
+
+    /* ==== Buttons ==== */
     .btn-primary {
-      background: linear-gradient(90deg, #ffca28, #ffb300);
+      background: linear-gradient(120deg, #22d3ee, #4f46e5);
       border: none;
       font-weight: 500;
-      transition: all 0.25s ease;
+      letter-spacing: 0.04em;
+      padding-inline: 22px;
+      padding-block: 10px;
+      border-radius: 999px;
+      box-shadow: 0 18px 50px rgba(59,130,246,0.7);
+      transition: transform var(--transition-soft), box-shadow var(--transition-soft), filter var(--transition-soft);
     }
+
     .btn-primary:hover {
-      background: linear-gradient(90deg, #ffb300, #ff8f00);
       transform: translateY(-2px);
+      box-shadow: 0 24px 70px rgba(59,130,246,0.95);
+      filter: brightness(1.08);
     }
 
-    #themeBtn {
-      border-radius: 30px;
-      border: none;
-      background: #343a40;
-      color: #fff;
-      transition: 0.3s;
+    .btn-secondary {
+      background: radial-gradient(circle at 0 0, #0f172a, #020617);
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      color: var(--text-main);
+      font-weight: 500;
+      padding-inline: 22px;
+      padding-block: 10px;
+      letter-spacing: 0.02em;
+      box-shadow: 0 16px 42px rgba(15,23,42,0.8);
+      transition: transform var(--transition-soft), box-shadow var(--transition-soft), border-color var(--transition-soft), background var(--transition-soft);
     }
-    #themeBtn:hover { background: #495057; }
 
-    [data-bs-theme="dark"] body {
-      background: linear-gradient(135deg, #1e1e1e, #121212, #0f0f0f);
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      border-color: rgba(56,189,248,0.75);
+      box-shadow: 0 22px 56px rgba(15,23,42,0.95);
+      background: radial-gradient(circle at 0 0, #111827, #020617);
     }
-    [data-bs-theme="dark"] .card { background-color: #212529; color: #f8f9fa; }
-    [data-bs-theme="dark"] header { background: linear-gradient(90deg, #343a40, #000000); }
+
+    .btn-outline-dark {
+      border-radius: 999px;
+      border-color: rgba(148,163,184,0.8) !important;
+      color: #e5e7eb;
+      background: linear-gradient(135deg, #020617, #020617);
+      font-size: 0.78rem;
+      padding-block: 6px;
+      padding-inline: 14px;
+      transition: background var(--transition-soft), transform var(--transition-soft), box-shadow var(--transition-soft), border-color var(--transition-soft);
+    }
+
+    .btn-outline-dark:hover {
+      border-color: rgba(56,189,248,0.9) !important;
+      background: linear-gradient(135deg, #0f172a, #020617);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 36px rgba(15,23,42,0.95);
+    }
+
+    /* ==== Actions & status ==== */
+    .action-row {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #22c55e, #15803d);
+      box-shadow: 0 0 12px rgba(34,197,94,0.9);
+      animation: pulseDot 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 0.65; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+
+    .status-text[data-state="working"] .status-dot {
+      background: radial-gradient(circle, #facc15, #ca8a04);
+      box-shadow: 0 0 12px rgba(234,179,8,0.9);
+    }
+
+    .status-text[data-state="error"] .status-dot {
+      background: radial-gradient(circle, #f97373, #b91c1c);
+      box-shadow: 0 0 12px rgba(239,68,68,0.9);
+    }
+
+    /* ==== Speed test side ==== */
+    .metric-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .metric-value {
+      font-size: 1.4rem;
+      font-weight: 600;
+      background: linear-gradient(120deg, #a5f3fc, #f472b6, #facc15);
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 22px rgba(59,130,246,0.8);
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ==== Softer LIGHT THEME (less bright, less flashy) ==== */
+    [data-bs-theme="light"] body {
+      background: radial-gradient(circle at 0% 0%, #c7d2fe, #e2e8f0 45%, #cbd5e1 100%);
+      color: #020617;
+    }
+
+    /* Dim the glowing orbs in light mode so they don’t overwhelm */
+    [data-bs-theme="light"] .orb {
+      opacity: 0.35;
+      filter: blur(55px);
+    }
+
+    /* Panel uses soft gray-blue instead of pure white */
+    [data-bs-theme="light"] .ip-panel {
+      background: linear-gradient(
+        135deg,
+        rgba(248, 250, 252, 0.96),
+        rgba(226, 232, 240, 0.98)
+      );
+      border-color: rgba(148,163,184,0.45);
+      box-shadow: 0 12px 40px rgba(148,163,184,0.45);
+    }
+
+    /* Cards: muted glass instead of glowing white */
+    [data-bs-theme="light"] .glass-card {
+      background: linear-gradient(
+        135deg,
+        rgba(248, 250, 252, 0.96),
+        rgba(226, 232, 240, 0.98)
+      );
+      box-shadow: 0 10px 28px rgba(148,163,184,0.4);
+    }
+
+    /* Text + chips + hints use softer gray */
+    [data-bs-theme="light"] .ip-header p,
+    [data-bs-theme="light"] .status-text,
+    [data-bs-theme="light"] .hint,
+    [data-bs-theme="light"] .chip {
+      color: #4b5563;
+    }
+
+    /* 🔧 NEW: Make "Public IP Scanner" black in light mode */
+    [data-bs-theme="light"] .ip-title h1 {
+      color: #0f172a;
+      text-shadow: none;
+    }
+
+    /* Secondary button: subtle gray, not glowing */
+    [data-bs-theme="light"] .btn-secondary {
+      background: linear-gradient(135deg, #e5e7eb, #e2e8f0);
+      color: #111827;
+      box-shadow: 0 10px 30px rgba(148,163,184,0.5);
+      border-color: rgba(148,163,184,0.7);
+    }
+    [data-bs-theme="light"] .btn-secondary:hover {
+      box-shadow: 0 14px 40px rgba(148,163,184,0.7);
+    }
+
+    /* Copy buttons: soft gray pill */
+    [data-bs-theme="light"] .btn-outline-dark {
+      background: #f3f4f6;
+      color: #111827;
+      border-color: rgba(148,163,184,0.8) !important;
+      box-shadow: 0 8px 24px rgba(148,163,184,0.45);
+    }
+    [data-bs-theme="light"] .btn-outline-dark:hover {
+      background: #e5e7eb;
+    }
+
+    /* Theme toggle pill: pastel instead of neon */
+    [data-bs-theme="light"] .theme-toggle-btn {
+      background: linear-gradient(135deg, #dbeafe, #e5e7eb);
+      color: #111827;
+      box-shadow: 0 10px 26px rgba(148,163,184,0.5);
+    }
+    [data-bs-theme="light"] .theme-toggle-btn:hover {
+      box-shadow: 0 14px 34px rgba(148,163,184,0.7);
+    }
+
+    /* Small screens tweaks */
+    @media (max-width: 576px) {
+      .ip-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div class="container py-5">
-    <header class="mb-5 d-flex justify-content-between align-items-end">
-      <div>
-        <h1 class="h3 mb-1">🌐 Public IP Checker</h1>
-        <p class="mb-0">Check your current public IPv4 and IPv6 instantly.</p>
-      </div>
-      <button id="themeBtn" class="btn btn-sm px-3 py-2">Toggle Theme</button>
-    </header>
+  <!-- Animated background glows -->
+  <div class="orb orb--cyan"></div>
+  <div class="orb orb--purple"></div>
+  <div class="orb orb--amber"></div>
 
-    <div class="row g-4">
-      <div class="col-md-6">
-        <div class="card shadow">
-          <div class="card-body">
-            <h6 class="text-uppercase mb-2">IPv4 Address</h6>
-            <div class="d-flex align-items-center gap-2">
-              <span id="ipv4" class="mono fs-5">Detecting…</span>
+  <div class="ip-shell">
+    <div class="ip-panel">
+      <header class="ip-header">
+        <div>
+          <div class="ip-title">
+            <div class="ip-logo">IP</div>
+            <h1>Public IP Scanner</h1>
+          </div>
+          <p>Instantly detect your current public IPv4 &amp; IPv6 and run a quick download speed test.</p>
+          <div class="ip-pill mt-2">
+            <span style="width:8px; height:8px; border-radius:999px; background:radial-gradient(circle,#22d3ee,#2563eb); box-shadow:0 0 12px rgba(56,189,248,0.9);"></span>
+            <span>Local Flask API · IPv4 / IPv6 · Speed Test</span>
+          </div>
+        </div>
+
+        <button id="themeBtn" class="theme-toggle-btn">
+          <span>Toggle theme</span>
+          <span>☾</span>
+        </button>
+      </header>
+
+      <div class="ip-grid">
+        <!-- LEFT: IP Cards + actions -->
+        <div>
+          <div class="glass-card tilt-card mb-3">
+            <div class="card-label">IPv4 Address</div>
+            <div class="ip-row">
+              <div>
+                <div id="ipv4" class="ip-value">Detecting…</div>
+                <div class="hint">Your public IPv4 as seen from the internet.</div>
+              </div>
               <button id="copy4" class="btn btn-sm btn-outline-dark">Copy</button>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="col-md-6">
-        <div class="card shadow">
-          <div class="card-body">
-            <h6 class="text-uppercase mb-2">IPv6 Address</h6>
-            <div class="d-flex align-items-center gap-2">
-              <span id="ipv6" class="mono fs-5">Detecting…</span>
+          <div class="glass-card tilt-card">
+            <div class="card-label">IPv6 Address</div>
+            <div class="ip-row">
+              <div>
+                <div id="ipv6" class="ip-value">Detecting…</div>
+                <div class="hint">Your public IPv6 (if your ISP / network supports it).</div>
+              </div>
               <button id="copy6" class="btn btn-sm btn-outline-dark">Copy</button>
             </div>
+          </div>
+
+          <div class="action-row mt-3">
+            <button id="refreshBtn" class="btn btn-primary">Refresh IPs</button>
+            <button id="speedBtn" class="btn btn-secondary">Run Speed Test</button>
+            <button id="pingBtn" class="btn btn-secondary px-4 py-2">Ping Test</button>
+            <span id="status" class="status-text" data-state="idle">
+              <span class="status-dot"></span>
+              <span>Ready.</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Speed + info -->
+        <div class="glass-card tilt-card h-100">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="metric-label">Download Speed</span>
+            <span class="chip">
+              <span style="width:6px;height:6px;border-radius:999px;background:linear-gradient(120deg,#22d3ee,#a855f7);"></span>
+              <span>Local test · 5 MB</span>
+            </span>
+          </div>
+          <div class="metric-value" id="speedValue">— Mbps</div>
+          <div class="hint">
+            We fetch a 5 MB file from your Flask <code>/speedtest</code> endpoint and calculate an approximate download speed.
+          </div>
+
+          <hr class="mt-3 mb-3" style="border-color:rgba(148,163,184,0.35);">
+
+          <div class="small" style="color:var(--muted);">
+            <strong>How it works</strong><br/>
+            The frontend calls your local Flask API:
+            <ul class="mt-1 mb-1">
+              <li><code>/api/ipv4</code> → returns your public IPv4</li>
+              <li><code>/api/ipv6</code> → returns your public IPv6</li>
+              <li><code>/speedtest</code> → returns a 5 MB binary blob</li>
+            </ul>
+            The UI uses glassmorphism, 3D hover and neon gradients for a futuristic feel.
           </div>
         </div>
       </div>
     </div>
-
-    <div class="d-flex gap-3 mt-5">
-      <button id="refreshBtn" class="btn btn-primary px-4 py-2">🔄 Refresh</button>
-      <button id="speedBtn" class="btn btn-secondary px-4 py-2">🚀 Speed Test</button>
-      <span id="status" class="align-self-center text-muted small">Ready.</span>
-    </div>
-
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -126,78 +626,176 @@
   <script>
     const ipv4El = document.getElementById("ipv4");
     const ipv6El = document.getElementById("ipv6");
-    const statusEl = document.getElementById("status");
+    const statusWrapper = document.getElementById("status");
+    const statusEl = statusWrapper.querySelector("span:last-child");
     const refreshBtn = document.getElementById("refreshBtn");
     const copy4 = document.getElementById("copy4");
     const copy6 = document.getElementById("copy6");
     const speedBtn = document.getElementById("speedBtn");
+    const pingBtn = document.getElementById("pingBtn");
     const themeBtn = document.getElementById("themeBtn");
+    const speedValueEl = document.getElementById("speedValue");
+
+    /* NEW BUTTON: IP Info (created dynamically) */
+    const geoBtn = document.createElement("button");
+    geoBtn.className = "btn btn-secondary";
+    geoBtn.textContent = "IP Info";
+    document.querySelector(".action-row").appendChild(geoBtn);
+
+    const API_BASE = window.location.origin;
 
     async function getJSON(url) {
       const res = await fetch(url, { cache: "no-store" });
       return res.ok ? res.json() : {};
     }
 
+    function setStatus(text, state = "idle") {
+      statusWrapper.dataset.state = state;
+      statusEl.textContent = text;
+    }
+
     async function detect() {
-      statusEl.textContent = "Detecting…";
+      setStatus("Detecting IPs…", "working");
       ipv4El.textContent = "Detecting…";
       ipv6El.textContent = "Detecting…";
 
       try {
-        const v4 = await getJSON("http://127.0.0.1:5000/api/ipv4");
+        const v4 = await getJSON(`${API_BASE}/api/ipv4`);
         ipv4El.textContent = v4.ip || "Not detected";
       } catch {
         ipv4El.textContent = "Not detected";
       }
 
       try {
-        const v6 = await getJSON("http://127.0.0.1:5000/api/ipv6");
+        const v6 = await getJSON(`${API_BASE}/api/ipv6`);
         ipv6El.textContent = v6.ip || "Not detected";
       } catch {
         ipv6El.textContent = "Not detected";
       }
 
-      statusEl.textContent = "Ready.";
+      setStatus("Ready.", "idle");
     }
 
     function copyToClipboard(text) {
       if (!text || text === "Detecting…" || text === "Not detected") return;
       navigator.clipboard.writeText(text).then(() => {
-        statusEl.textContent = `Copied: ${text}`;
-        setTimeout(() => (statusEl.textContent = "Ready."), 1500);
+        setStatus(`Copied: ${text}`, "working");
+        setTimeout(() => setStatus("Ready.", "idle"), 1500);
       });
     }
 
-    // 🚀 SPEED TEST
+    /*  SPEED TEST */
     async function speedTest() {
-      statusEl.textContent = "Running speed test…";
-
       const fileSizeBytes = 5 * 1024 * 1024;
-      const url = "http://127.0.0.1:5000/speedtest";
+      const url = `${API_BASE}/speedtest`;
 
-      const start = performance.now();
-      const response = await fetch(url);
-      await response.blob();
-      const end = performance.now();
+      setStatus("Running speed test…", "working");
+      speedValueEl.textContent = "… Mbps";
 
-      const timeSec = (end - start) / 1000;
-      const speedMbps = ((fileSizeBytes * 8) / timeSec / 1024 / 1024).toFixed(2);
+      try {
+        const start = performance.now();
+        const response = await fetch(url);
+        await response.blob();
+        const end = performance.now();
 
-      statusEl.textContent = `Download Speed: ${speedMbps} Mbps`;
-      setTimeout(() => (statusEl.textContent = "Ready."), 3000);
+        const timeSec = (end - start) / 1000;
+        const speedMbps = ((fileSizeBytes * 8) / timeSec / 1024 / 1024).toFixed(2);
+
+        speedValueEl.textContent = `${speedMbps} Mbps`;
+        setStatus("Speed test complete.", "idle");
+      } catch (err) {
+        console.error(err);
+        speedValueEl.textContent = "— Mbps";
+        setStatus("Speed test failed.", "error");
+      }
+
+      setTimeout(() => setStatus("Ready.", "idle"), 3000);
     }
 
+    /*  NEW FEATURE #1 — LATENCY / PING TEST */
+    async function pingTest() {
+      setStatus("Pinging server…", "working");
+
+      try {
+        const start = performance.now();
+        await fetch(`${API_BASE}/ping`);
+        const end = performance.now();
+
+        const latency = (end - start).toFixed(2);
+        alert(` Ping Result\nLatency: ${latency} ms`);
+
+        setStatus("Ping complete.", "idle");
+      } catch {
+        setStatus("Ping failed.", "error");
+      }
+
+      setTimeout(() => setStatus("Ready.", "idle"), 2000);
+    }
+
+    /* NEW FEATURE #2 — IP GEOLOCATION INFORMATION */
+    async function geoInfo() {
+      setStatus("Fetching IP info…", "working");
+
+      try {
+        const data = await getJSON(`${API_BASE}/api/geo`);
+
+        alert(
+          " IP Information\n\n" +
+          `IP: ${data.ip || ipv4El.textContent}\n` +
+          `Country: ${data.country_name}\n` +
+          `Region: ${data.region}\n` +
+          `City: ${data.city}\n` +
+          `ISP: ${data.org}\n` +
+          `ASN: ${data.asn}\n` +
+          `Timezone: ${data.timezone}`
+        );
+
+        setStatus("Info retrieved.", "idle");
+      } catch {
+        setStatus("Failed to get IP info.", "error");
+      }
+
+      setTimeout(() => setStatus("Ready.", "idle"), 2000);
+    }
+
+    /* EVENT LISTENERS */
     refreshBtn.addEventListener("click", detect);
     speedBtn.addEventListener("click", speedTest);
+    pingBtn.addEventListener("click", pingTest);
+    geoBtn.addEventListener("click", geoInfo);
+
     copy4.addEventListener("click", () => copyToClipboard(ipv4El.textContent));
     copy6.addEventListener("click", () => copyToClipboard(ipv6El.textContent));
 
     themeBtn.addEventListener("click", () => {
       const html = document.documentElement;
-      const theme = html.getAttribute("data-bs-theme");
+      const theme = html.getAttribute("data-bs-theme") || "dark";
       html.setAttribute("data-bs-theme", theme === "light" ? "dark" : "light");
     });
 
+    /* 3D Tilt */
+    function initTilt() {
+      if ("ontouchstart" in window) return;
+      const cards = document.querySelectorAll(".tilt-card");
+      cards.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = (y - centerY) / 26;
+          const rotateY = (centerX - x) / 26;
+          card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+        });
+      });
+    }
+
+    initTilt();
     detect();
   </script>
 </body>
