@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # All commands below will run inside the Penta folder
+    # 👇 every "run" command happens inside Penta
     defaults:
       run:
         working-directory: Penta
