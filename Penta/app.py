@@ -11,7 +11,6 @@ TIMEOUT = 8
 IPV4_URL = "https://api4.ipify.org?format=json"
 IPV6_URL = "https://api6.ipify.org?format=json"
 
-# Geolocation API (more reliable than ipapi.co)
 GEO_URL = "https://ipwhois.app/json/{}"
 
 
